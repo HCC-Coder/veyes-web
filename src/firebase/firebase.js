@@ -1,5 +1,6 @@
 import * as firebase from 'firebase';
 import * as configVar from '../config';
+import 'firebase/firestore';
 
 const config = {
   apiKey: configVar.apiKey,
@@ -16,8 +17,10 @@ if (!firebase.apps.length) {
 
 const auth = firebase.auth();
 const db = firebase.database();
+const firestore = firebase.firestore();
 
 export {
+  firestore,
   db,
   auth,
 };

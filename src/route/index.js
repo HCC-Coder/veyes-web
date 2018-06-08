@@ -2,12 +2,8 @@ import { route, groupRoute, routeName } from './method';
 
 import WelcomePage from '../components/Welcome';
 import HomePage from '../components/Home';
-import { 
-  SignInPage,
-  SignUpPage,
-  PasswordForgetPage,
-  AccountPage,
-} from '../components/';
+import * as ContentEditor from '../components/ContentEditor';
+import * as Components from '../components/';
 
 import { withAuthentication, withAuthorization, redirectIfAuthenticated } from '../middleware';
 
@@ -17,9 +13,9 @@ const Routes = [
   route('/', WelcomePage, 'landing', [withAuthentication]),
   ...groupRoute('/',
     [
-      route('signup', SignUpPage, 'signup'),
-      route('signin', SignInPage, 'signin'),
-      route('pw-forget', PasswordForgetPage, 'pwforget'),
+      route('signup', Components.SignUpPage, 'signup'),
+      route('signin', Components.SignInPage, 'signin'),
+      route('pw-forget', Components.PasswordForgetPage, 'pwforget'),
       route('testing', () =>  "Component"),
       // route('uri', Component),
     ],
@@ -29,7 +25,16 @@ const Routes = [
   ...groupRoute('/', 
     [
       route('home', HomePage, 'home'),
-      route('account', AccountPage, 'account'),
+      route('account', Components.AccountPage, 'account'),
+    ],
+    [
+      withAuthorization(authCondition),
+    ]),
+  ...groupRoute('/content-editor/song/',
+    [
+      route('', ContentEditor.Home, ''),
+      route('create', ContentEditor.CreateSongPage, ''),
+      route(':id', ContentEditor.EditSongPage, ''),
     ],
     [
       withAuthorization(authCondition),

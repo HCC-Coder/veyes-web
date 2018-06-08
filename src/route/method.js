@@ -11,7 +11,7 @@ const route = (uri, component, name = null, hoc = null) => {
         processedComponent = hoc[i](processedComponent);
       }
     }
-    return {uri: uri, component: component};
+    return {uri: uri, component: processedComponent};
 }
 
 const groupRoute = (path, routes, hoc = null) => {
