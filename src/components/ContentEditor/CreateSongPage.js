@@ -1,6 +1,7 @@
 import React from 'react';
 import { firebase } from '../../firebase';
 let db = firebase.firestore;
+db.settings({timestampsInSnapshots: true});
 
 export default class CreateSongPage extends React.Component {
   state = {
@@ -118,7 +119,7 @@ class SongForm extends React.Component {
 }
 
 class Preview extends React.Component {
-  state = {mode: null}
+  state = {mode: null, arrangement: null}
 
   linesToArray(text) {
       let result = [];
@@ -169,6 +170,9 @@ class Preview extends React.Component {
     switchMode(lang) {
       this.setState({mode: lang});
     }
+    changeArrangement(name) {
+      this.setState({arrangement: name});
+    }
     sortByLabel(array) {
         let result = {};
         let label;
@@ -202,32 +206,38 @@ class Preview extends React.Component {
         processedLyrics[langs[i % langs.length]].push(lyricComponent);
       });
 
-      let outputByLanguage = [];
-      for(let x in processedLyrics){
-        let lyrics = [];
-        processedLyrics[x].map((output, i) => {
-          lyrics.push(<div key={i}>label: {output.label}, text: {output.text}</div>);
-        })
-        outputByLanguage.push(<div key={x}> {x} <br/> {lyrics} <hr/></div>);
+      let arrangement_option = [];
+      let arrangement_list = this.sortByLabel(
+        this.emptyRemoval(
+          this.separateLabel(
+            this.linesToArray(this.props.arrangements)
+          )
+        )
+      );
+      for(let name in arrangement_list) {
+        arrangement_option.push(<button key={name} onClick={this.changeArrangement.bind(this, name)}>{name}</button>);
       }
       let outputByLabel = [];
-      if(this.state.mode) {
+      if(this.state.mode && this.state.arrangement) {
         let list = this.sortByLabel(processedLyrics[this.state.mode]);
-        for(let x in list) {
+        let arrangement = arrangement_list[this.state.arrangement];
+        if(arrangement)arrangement.map((a, i) => {
           let lyrics = [];
-          list[x].map((text, i) => {
-            lyrics.push(<div key={i}>{text}</div>);
+          if(list && (a in list))list[a].map((text, j) => {
+            lyrics.push(<div key={j}>{text}</div>);
           });
-          outputByLabel.push(<div key={x}>{x}<br/>{lyrics}</div>);
-        }
+          outputByLabel.push(<div key={i}>{a}<br/>{lyrics}<br/></div>);
+        });
       }
       return (
-        <div style={{display: 'flex'}}>
+        <div>
           <div>
-            {outputByLanguage}
-          </div>
-          <div>
-            {buttons}
+            <div>
+              {buttons}
+            </div>
+            <div>
+              {arrangement_option}
+            </div>
             {outputByLabel}
           </div>
         </div>
