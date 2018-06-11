@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
 import { firebase } from '../firebase';
-import { routeName } from '../route';
+import { routes } from '../route';
 
 const redirectIfAuthenticated = (Component) => {
   class RedirectIfAuthenticated extends React.Component {
@@ -11,7 +11,7 @@ const redirectIfAuthenticated = (Component) => {
     componentDidMount() {
       firebase.auth.onAuthStateChanged(authUser => {
         if (authUser) {
-          this.props.history.push(routeName.home);
+          this.props.history.push(routes.routeName.home);
         }
         this.setState({ready: 'true'});
       });

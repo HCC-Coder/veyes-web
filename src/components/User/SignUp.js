@@ -3,7 +3,7 @@ import {
   Link,
 } from 'react-router-dom';
 import { auth, db } from '../../firebase';
-import { routeName } from '../../route';
+import { routes } from '../../route';
 
 const SignUpPage = ({ history }) =>
   <div>
@@ -48,7 +48,7 @@ class SignUpForm extends Component {
         db.doCreateUser(authUser.uid, username, email)
           .then(() => {
             this.setState(() => ({ ...INITIAL_STATE }));
-            history.push(routeName.home);
+            history.push(routes.routeNmae.home);
           })
           .catch(error => {
             this.setState(byPropKey('error', error));
@@ -117,7 +117,7 @@ const SignUpLink = () =>
   <p>
     Don't have an account?
     {' '}
-    <Link to={routeName.signup}>Sign Up</Link>
+    <Link to={routes.routeName.signup}>Sign Up</Link>
   </p>
 
 export default SignUpPage;

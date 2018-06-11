@@ -5,19 +5,19 @@ import {
   Route,
 } from 'react-router-dom';
 
-import Routes from '../route';
+import {routes} from '../route';
 
 import { withAuthentication } from '../middleware';
 import { Error404Page } from './';
 
 function App() {
-  let routes = Routes.map((route, index) => {
+  let Routes = routes.routes.map((route, index) => {
     return (<Route key={index} exact path={route.uri} component={route.component} />);
   });
   return (
     <Router>
       <Switch>
-        {routes}
+        {Routes}
         <Route component={() => <Error404Page />} />
       </Switch>
     </Router>

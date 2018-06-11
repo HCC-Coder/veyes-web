@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { SignUpLink } from './SignUp';
 import { PasswordForgetLink } from './PasswordForget';
 import { auth } from '../../firebase';
-import { routeName } from '../../route';
+import { routes } from '../../route';
 
 const SignInPage = ({ history }) =>
   <div>
@@ -42,7 +42,7 @@ class SignInForm extends Component {
     auth.doSignInWithEmailAndPassword(email, password)
       .then(() => {
         this.setState(() => ({ ...INITIAL_STATE }));
-        history.push(routeName.home);
+        history.push(routes.routeName.home);
       })
       .catch(error => {
         this.setState(byPropKey('error', error));
